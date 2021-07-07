@@ -59,9 +59,6 @@ message URI {
   string name = 1;
 }
 
-message User {
-}
-
 //ApplyParameters holds parameters to Apply
 message ApplyRequest {
   Context context = 1;

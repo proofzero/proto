@@ -108,25 +108,34 @@ components:
           format: RFC3339
     Context:
       type: object
-      description: context object
+      description: |
+        The context to execute the command against.
       properties:
         name:
-          description: The name of the context
+          description: |
+            [required] The name of the context a command is inteded to run against.
+            Producers must ensure this name is available in the ktrl.cue config.
           type: string
     Cue:
       type: object
-      description: A serialized resource
+      description: |
+        A cue file represented as a string.
       properties:
         cue:
           type: string
-          description: serialized cue value
+          description: |
+            [required] A cue file represetned as a string. This string must be valid cue
+            and will be validated by the reciever.
     CueList:
       type: object
-      description: A serialized resource
+      description: |
+        A list of cue structs represented as a string.
       properties:
         cue:
           type: array
-          description: serialized list of cue values
+          description: |
+            [required] A list of cue structs represented as a string. The reciever should
+            compile these string into cue.Value for evaluation and validation.
           items:
             type: string
     MediaType:
@@ -152,6 +161,3 @@ components:
         name:
           description: FIXME
           type: string
-    User:
-      type: object
-      description: A user

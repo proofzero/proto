@@ -1,6 +1,9 @@
 type: object
-description: A serialized resource
+description: |
+  A cue file represented as a string.
 properties:
   cue:
     type: string
-    description: serialized cue value
+    description: |
+      [required] A cue file represetned as a string. This string must be valid cue
+      and will be validated by the reciever.

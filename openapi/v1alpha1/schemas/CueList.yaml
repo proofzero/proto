@@ -1,8 +1,11 @@
 type: object
-description: A serialized resource
+description: |
+  A list of cue structs represented as a string.
 properties:
   cue:
     type: array
-    description: serialized list of cue values
+    description: |
+      [required] A list of cue structs represented as a string. The reciever should
+      compile these string into cue.Value for evaluation and validation.
     items:
       type: string

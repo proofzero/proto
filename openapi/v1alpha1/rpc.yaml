@@ -1,5 +1,4 @@
-# TODO: breakdown further following this pattern
-# https://davidgarcia.dev/posts/how-to-split-open-api-spec-into-multiple-files/
+# rpc.yaml
 openapi: "3.0.0"
 info:
   version: v1alpha1
@@ -7,6 +6,7 @@ info:
   license:
     name: Apache 3.0
 
+# TODO: split paths into /paths schemas
 paths:
   /apply:
     post:

@@ -10,5 +10,3 @@ MediaType:
   $ref: './MediaType.yaml'
 URI:
   $ref: './URI.yaml'
-User:
-  $ref: './User.yaml'
