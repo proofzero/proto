@@ -1,0 +1,83 @@
+syntax = "proto3";
+
+package kubelt;
+option go_package="kubelt.com/proto/v1alpha1";
+
+import "google/api/annotations.proto";
+
+import "google/protobuf/descriptor.proto";
+
+import "google/protobuf/empty.proto";
+
+message Error {
+  int32 code = 1;
+
+  string message = 2;
+}
+
+message CloudEvent {
+  string specversion = 1;
+
+  string id = 2;
+
+  URI source = 3;
+
+  string type = 4;
+
+  MediaType datacontenttype = 5;
+
+  URI dataschema = 6;
+
+  string subject = 7;
+
+  string time = 8;
+}
+
+message Context {
+  string name = 1;
+}
+
+message Cue {
+  string cue = 1;
+}
+
+message CueList {
+  repeated string cue = 1;
+}
+
+message MediaType {
+  string type = 1;
+
+  string subtype = 2;
+
+  string suffix = 3;
+
+  string parameters = 4;
+}
+
+message URI {
+  string name = 1;
+}
+
+message User {
+}
+
+//ApplyParameters holds parameters to Apply
+message ApplyRequest {
+  Context context = 1;
+
+  Cue resources = 2;
+}
+
+message ApplyDefault {
+  CueList resources = 1;
+
+  Error error = 2;
+}
+
+service Kubelt {
+  rpc Apply ( ApplyRequest ) returns ( ApplyDefault ) {
+    option (google.api.http) = { post:"/apply" body:"context"  };
+  }
+}
+

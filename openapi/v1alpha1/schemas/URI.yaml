@@ -1,0 +1,10 @@
+# proto/openapi/v1alpha1/schemas/URI.yaml
+---
+
+type: object
+description: universal resource indicator
+properties:
+  # TODO scalar or piecewise?
+  name:
+    description: FIXME
+    type: string

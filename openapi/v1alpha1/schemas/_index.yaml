@@ -1,0 +1,14 @@
+CloudEvent:
+  $ref: './CloudEvent.yaml'
+Context:
+  $ref: './Context.yaml'
+Cue:
+  $ref: './Cue.yaml'
+CueList:
+  $ref: './CueList.yaml'
+MediaType:
+  $ref: './MediaType.yaml'
+URI:
+  $ref: './URI.yaml'
+User:
+  $ref: './User.yaml'

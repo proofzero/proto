@@ -1,0 +1,8 @@
+type: object
+description: A serialized resource
+properties:
+  cue:
+    type: array
+    description: serialized list of cue values
+    items:
+      type: string

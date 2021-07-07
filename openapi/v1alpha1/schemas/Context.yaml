@@ -1,0 +1,6 @@
+type: object
+description: context object
+properties:
+  name:
+    description: The name of the context
+    type: string

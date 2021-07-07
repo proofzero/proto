@@ -1,0 +1,51 @@
+name: Gatsby Publish
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  changes:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@master
+      - uses: dorny/paths-filter@v2.10.1
+        id: filter
+        with:
+          filters: |
+            docs: 'docs/**'
+
+  build:
+    needs: changes
+    if: >
+      github.event_name == 'pull_request'
+      && needs.changes.outputs.docs == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - uses: enriikke/gatsby-gh-pages-action@v2
+        with:
+          access-token: ${{ secrets.ACCESS_TOKEN }}
+          working-dir: docs
+          deploy-branch: gh-pages
+          gatsby-args: --prefix-paths
+          skip-publish: true
+  
+  publish:
+    needs: changes
+    if: >
+      github.event_name != 'pull_request'
+      && needs.changes.outputs.docs == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - uses: enriikke/gatsby-gh-pages-action@v2
+        with:
+          access-token: ${{ secrets.ACCESS_TOKEN }}
+          working-dir: docs
+          deploy-branch: gh-pages
+          gatsby-args: --prefix-paths
