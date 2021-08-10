@@ -10,4 +10,4 @@ API definitions for kubelt systems using OpenAPIv3 specifications to generate to
 
 
 # TODO
-- Cuelang for proto generation?
+- Cuelang for proto generation

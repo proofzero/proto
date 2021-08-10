@@ -34,7 +34,8 @@ message Node {
 
 // A list of manifests
 message Manifests {
-  repeated Node manifest = 1;
+  // label, query params
+  map<string, Node> manifest = 1;
 }
 
 // A graph of kubelt nodes
@@ -54,7 +55,7 @@ message Command {
   
   Operation op = 1;
   string kind = 2;
-  Node cmd = 3;
+  Node node = 3;
 }
 
 // A list of Commands
