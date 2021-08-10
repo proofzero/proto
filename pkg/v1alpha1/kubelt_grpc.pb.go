@@ -18,7 +18,9 @@ const _ = grpc.SupportPackageIsVersion7
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type KubeltClient interface {
-	Apply(ctx context.Context, in *ApplyRequest, opts ...grpc.CallOption) (*ApplyDefault, error)
+	HealthCheck(ctx context.Context, in *HealthCheckRequest, opts ...grpc.CallOption) (*HealthCheckResponse, error)
+	Apply(ctx context.Context, in *ApplyRequest, opts ...grpc.CallOption) (*ApplyResponse, error)
+	Commit(ctx context.Context, in *CommitRequest, opts ...grpc.CallOption) (*CommitResponse, error)
 }
 
 type kubeltClient struct {
@@ -29,9 +31,27 @@ func NewKubeltClient(cc grpc.ClientConnInterface) KubeltClient {
 	return &kubeltClient{cc}
 }
 
-func (c *kubeltClient) Apply(ctx context.Context, in *ApplyRequest, opts ...grpc.CallOption) (*ApplyDefault, error) {
-	out := new(ApplyDefault)
+func (c *kubeltClient) HealthCheck(ctx context.Context, in *HealthCheckRequest, opts ...grpc.CallOption) (*HealthCheckResponse, error) {
+	out := new(HealthCheckResponse)
+	err := c.cc.Invoke(ctx, "/kubelt.Kubelt/HealthCheck", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *kubeltClient) Apply(ctx context.Context, in *ApplyRequest, opts ...grpc.CallOption) (*ApplyResponse, error) {
+	out := new(ApplyResponse)
 	err := c.cc.Invoke(ctx, "/kubelt.Kubelt/Apply", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *kubeltClient) Commit(ctx context.Context, in *CommitRequest, opts ...grpc.CallOption) (*CommitResponse, error) {
+	out := new(CommitResponse)
+	err := c.cc.Invoke(ctx, "/kubelt.Kubelt/Commit", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -42,7 +62,9 @@ func (c *kubeltClient) Apply(ctx context.Context, in *ApplyRequest, opts ...grpc
 // All implementations must embed UnimplementedKubeltServer
 // for forward compatibility
 type KubeltServer interface {
-	Apply(context.Context, *ApplyRequest) (*ApplyDefault, error)
+	HealthCheck(context.Context, *HealthCheckRequest) (*HealthCheckResponse, error)
+	Apply(context.Context, *ApplyRequest) (*ApplyResponse, error)
+	Commit(context.Context, *CommitRequest) (*CommitResponse, error)
 	mustEmbedUnimplementedKubeltServer()
 }
 
@@ -50,8 +72,14 @@ type KubeltServer interface {
 type UnimplementedKubeltServer struct {
 }
 
-func (UnimplementedKubeltServer) Apply(context.Context, *ApplyRequest) (*ApplyDefault, error) {
+func (UnimplementedKubeltServer) HealthCheck(context.Context, *HealthCheckRequest) (*HealthCheckResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method HealthCheck not implemented")
+}
+func (UnimplementedKubeltServer) Apply(context.Context, *ApplyRequest) (*ApplyResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Apply not implemented")
+}
+func (UnimplementedKubeltServer) Commit(context.Context, *CommitRequest) (*CommitResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Commit not implemented")
 }
 func (UnimplementedKubeltServer) mustEmbedUnimplementedKubeltServer() {}
 
@@ -64,6 +92,24 @@ type UnsafeKubeltServer interface {
 
 func RegisterKubeltServer(s grpc.ServiceRegistrar, srv KubeltServer) {
 	s.RegisterService(&Kubelt_ServiceDesc, srv)
+}
+
+func _Kubelt_HealthCheck_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(HealthCheckRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(KubeltServer).HealthCheck(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/kubelt.Kubelt/HealthCheck",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(KubeltServer).HealthCheck(ctx, req.(*HealthCheckRequest))
+	}
+	return interceptor(ctx, in, info, handler)
 }
 
 func _Kubelt_Apply_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
@@ -84,6 +130,24 @@ func _Kubelt_Apply_Handler(srv interface{}, ctx context.Context, dec func(interf
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Kubelt_Commit_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CommitRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(KubeltServer).Commit(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/kubelt.Kubelt/Commit",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(KubeltServer).Commit(ctx, req.(*CommitRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // Kubelt_ServiceDesc is the grpc.ServiceDesc for Kubelt service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -92,8 +156,16 @@ var Kubelt_ServiceDesc = grpc.ServiceDesc{
 	HandlerType: (*KubeltServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
+			MethodName: "HealthCheck",
+			Handler:    _Kubelt_HealthCheck_Handler,
+		},
+		{
 			MethodName: "Apply",
 			Handler:    _Kubelt_Apply_Handler,
+		},
+		{
+			MethodName: "Commit",
+			Handler:    _Kubelt_Commit_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

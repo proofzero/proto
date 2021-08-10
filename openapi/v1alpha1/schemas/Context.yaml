@@ -1,9 +1,0 @@
-type: object
-description: |
-  The context to execute the command against.
-properties:
-  name:
-    description: |
-      [required] The name of the context a command is inteded to run against.
-      Producers must ensure this name is available in the ktrl.cue config.
-    type: string

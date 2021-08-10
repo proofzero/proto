@@ -1,13 +1,69 @@
+// proto/v1alpha1/kubelt.proto
+
 syntax = "proto3";
 
 package kubelt;
-option go_package="kubelt.com/proto/v1alpha1";
+option go_package="github.com/proofzero/kubelt/proto/v1alpha1";
 
-import "google/api/annotations.proto";
+import "google/protobuf/any.proto";
 
-import "google/protobuf/descriptor.proto";
 
-import "google/protobuf/empty.proto";
+// Fields
+// ============================================================================
+
+// A link
+message Link {
+  string source = 1;
+  string target = 2;
+  string kind = 3;
+  int32 rank = 4;
+  map<string, string> metadata = 5;
+}
+
+// A node 
+message Node {
+  string ID = 1;
+  string apiVersion = 2;
+  string kind = 3;
+  map<string, string> metadata = 4;
+  map<string, string> annotations = 5;
+  repeated google.protobuf.Any data = 6; // represented as a cue.Value
+  repeated Link previous = 7;
+  repeated Link next = 8;
+}
+
+// A list of manifests
+message Manifests {
+  repeated Node manifest = 1;
+}
+
+// A graph of kubelt nodes
+message Graph {
+  string graph = 1; // graph as string?
+}
+
+// A change command
+message Command {
+  enum  Operation {
+    INSERT = 0;
+    UPDATE = 1;
+    REMOVE = 2;
+    LINK = 4;
+    UNLINK = 5;
+  }
+  
+  Operation op = 1;
+  string kind = 2;
+  Node cmd = 3;
+}
+
+// A list of Commands
+message Commands {
+  repeated Command commands = 1;
+}
+
+// Requests
+// ============================================================================
 
 message Error {
   int32 code = 1;
@@ -15,66 +71,37 @@ message Error {
   string message = 2;
 }
 
-message CloudEvent {
-  string specversion = 1;
-
-  string id = 2;
-
-  URI source = 3;
-
-  string type = 4;
-
-  MediaType datacontenttype = 5;
-
-  URI dataschema = 6;
-
-  string subject = 7;
-
-  string time = 8;
+// HealthCheck
+message HealthCheckRequest {}
+message HealthCheckResponse {
+  Error error = 1;
 }
 
-message Context {
-  string name = 1;
-}
-
-message Cue {
-  string cue = 1;
-}
-
-message CueList {
-  repeated string cue = 1;
-}
-
-message MediaType {
-  string type = 1;
-
-  string subtype = 2;
-
-  string suffix = 3;
-
-  string parameters = 4;
-}
-
-message URI {
-  string name = 1;
-}
-
-//ApplyParameters holds parameters to Apply
+// Apply
 message ApplyRequest {
-  Context context = 1;
-
-  Cue resources = 2;
+  Manifests manifests = 2;
 }
 
-message ApplyDefault {
-  CueList resources = 1;
+message ApplyResponse {
+  Graph graph = 1;
 
   Error error = 2;
 }
 
+// Commit
+message CommitRequest {
+  Commands commands = 1;
+}
+
+message CommitResponse {
+  Error error = 1;
+}
+
+// Service
+// ============================================================================
 service Kubelt {
-  rpc Apply ( ApplyRequest ) returns ( ApplyDefault ) {
-    option (google.api.http) = { post:"/apply" body:"context"  };
-  }
+  rpc HealthCheck (HealthCheckRequest) returns (HealthCheckResponse);
+  rpc Apply ( ApplyRequest ) returns ( ApplyResponse );
+  rpc Commit ( CommitRequest ) returns ( CommitResponse );
 }
 
