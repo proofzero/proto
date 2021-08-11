@@ -19,10 +19,9 @@ const _ = grpc.SupportPackageIsVersion7
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type KubeltClient interface {
 	HealthCheck(ctx context.Context, in *HealthCheckRequest, opts ...grpc.CallOption) (*HealthCheckResponse, error)
-	UpsertUser(ctx context.Context, in *UpsertUserRequest, opts ...grpc.CallOption) (*UpsertUserResponse, error)
-	DeleteUser(ctx context.Context, in *DeleteUserRequest, opts ...grpc.CallOption) (*DeleteUserResponse, error)
+	Get(ctx context.Context, in *GetRequest, opts ...grpc.CallOption) (*QueryResponse, error)
+	Query(ctx context.Context, in *QueryRequest, opts ...grpc.CallOption) (*QueryResponse, error)
 	Apply(ctx context.Context, in *ApplyRequest, opts ...grpc.CallOption) (*ApplyResponse, error)
-	Commit(ctx context.Context, in *CommitRequest, opts ...grpc.CallOption) (*CommitResponse, error)
 }
 
 type kubeltClient struct {
@@ -42,18 +41,18 @@ func (c *kubeltClient) HealthCheck(ctx context.Context, in *HealthCheckRequest, 
 	return out, nil
 }
 
-func (c *kubeltClient) UpsertUser(ctx context.Context, in *UpsertUserRequest, opts ...grpc.CallOption) (*UpsertUserResponse, error) {
-	out := new(UpsertUserResponse)
-	err := c.cc.Invoke(ctx, "/kubelt.Kubelt/UpsertUser", in, out, opts...)
+func (c *kubeltClient) Get(ctx context.Context, in *GetRequest, opts ...grpc.CallOption) (*QueryResponse, error) {
+	out := new(QueryResponse)
+	err := c.cc.Invoke(ctx, "/kubelt.Kubelt/Get", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *kubeltClient) DeleteUser(ctx context.Context, in *DeleteUserRequest, opts ...grpc.CallOption) (*DeleteUserResponse, error) {
-	out := new(DeleteUserResponse)
-	err := c.cc.Invoke(ctx, "/kubelt.Kubelt/DeleteUser", in, out, opts...)
+func (c *kubeltClient) Query(ctx context.Context, in *QueryRequest, opts ...grpc.CallOption) (*QueryResponse, error) {
+	out := new(QueryResponse)
+	err := c.cc.Invoke(ctx, "/kubelt.Kubelt/Query", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -69,24 +68,14 @@ func (c *kubeltClient) Apply(ctx context.Context, in *ApplyRequest, opts ...grpc
 	return out, nil
 }
 
-func (c *kubeltClient) Commit(ctx context.Context, in *CommitRequest, opts ...grpc.CallOption) (*CommitResponse, error) {
-	out := new(CommitResponse)
-	err := c.cc.Invoke(ctx, "/kubelt.Kubelt/Commit", in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
 // KubeltServer is the server API for Kubelt service.
 // All implementations must embed UnimplementedKubeltServer
 // for forward compatibility
 type KubeltServer interface {
 	HealthCheck(context.Context, *HealthCheckRequest) (*HealthCheckResponse, error)
-	UpsertUser(context.Context, *UpsertUserRequest) (*UpsertUserResponse, error)
-	DeleteUser(context.Context, *DeleteUserRequest) (*DeleteUserResponse, error)
+	Get(context.Context, *GetRequest) (*QueryResponse, error)
+	Query(context.Context, *QueryRequest) (*QueryResponse, error)
 	Apply(context.Context, *ApplyRequest) (*ApplyResponse, error)
-	Commit(context.Context, *CommitRequest) (*CommitResponse, error)
 	mustEmbedUnimplementedKubeltServer()
 }
 
@@ -97,17 +86,14 @@ type UnimplementedKubeltServer struct {
 func (UnimplementedKubeltServer) HealthCheck(context.Context, *HealthCheckRequest) (*HealthCheckResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method HealthCheck not implemented")
 }
-func (UnimplementedKubeltServer) UpsertUser(context.Context, *UpsertUserRequest) (*UpsertUserResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method UpsertUser not implemented")
+func (UnimplementedKubeltServer) Get(context.Context, *GetRequest) (*QueryResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Get not implemented")
 }
-func (UnimplementedKubeltServer) DeleteUser(context.Context, *DeleteUserRequest) (*DeleteUserResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method DeleteUser not implemented")
+func (UnimplementedKubeltServer) Query(context.Context, *QueryRequest) (*QueryResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Query not implemented")
 }
 func (UnimplementedKubeltServer) Apply(context.Context, *ApplyRequest) (*ApplyResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Apply not implemented")
-}
-func (UnimplementedKubeltServer) Commit(context.Context, *CommitRequest) (*CommitResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method Commit not implemented")
 }
 func (UnimplementedKubeltServer) mustEmbedUnimplementedKubeltServer() {}
 
@@ -140,38 +126,38 @@ func _Kubelt_HealthCheck_Handler(srv interface{}, ctx context.Context, dec func(
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Kubelt_UpsertUser_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(UpsertUserRequest)
+func _Kubelt_Get_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(KubeltServer).UpsertUser(ctx, in)
+		return srv.(KubeltServer).Get(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/kubelt.Kubelt/UpsertUser",
+		FullMethod: "/kubelt.Kubelt/Get",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(KubeltServer).UpsertUser(ctx, req.(*UpsertUserRequest))
+		return srv.(KubeltServer).Get(ctx, req.(*GetRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Kubelt_DeleteUser_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(DeleteUserRequest)
+func _Kubelt_Query_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(QueryRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(KubeltServer).DeleteUser(ctx, in)
+		return srv.(KubeltServer).Query(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/kubelt.Kubelt/DeleteUser",
+		FullMethod: "/kubelt.Kubelt/Query",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(KubeltServer).DeleteUser(ctx, req.(*DeleteUserRequest))
+		return srv.(KubeltServer).Query(ctx, req.(*QueryRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -194,24 +180,6 @@ func _Kubelt_Apply_Handler(srv interface{}, ctx context.Context, dec func(interf
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Kubelt_Commit_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(CommitRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(KubeltServer).Commit(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: "/kubelt.Kubelt/Commit",
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(KubeltServer).Commit(ctx, req.(*CommitRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
 // Kubelt_ServiceDesc is the grpc.ServiceDesc for Kubelt service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -224,20 +192,16 @@ var Kubelt_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _Kubelt_HealthCheck_Handler,
 		},
 		{
-			MethodName: "UpsertUser",
-			Handler:    _Kubelt_UpsertUser_Handler,
+			MethodName: "Get",
+			Handler:    _Kubelt_Get_Handler,
 		},
 		{
-			MethodName: "DeleteUser",
-			Handler:    _Kubelt_DeleteUser_Handler,
+			MethodName: "Query",
+			Handler:    _Kubelt_Query_Handler,
 		},
 		{
 			MethodName: "Apply",
 			Handler:    _Kubelt_Apply_Handler,
-		},
-		{
-			MethodName: "Commit",
-			Handler:    _Kubelt_Commit_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

@@ -5,81 +5,15 @@ syntax = "proto3";
 package kubelt;
 option go_package="github.com/proofzero/kubelt/proto/v1alpha1";
 
-import "google/protobuf/any.proto";
-
-
-// Fields
-// ============================================================================
-
-// A link
-message Link {
-  string source = 1;
-  string target = 2;
-  string kind = 3;
-  int32 rank = 4;
-  map<string, string> metadata = 5;
-}
-
-// A node 
-message Node {
-  string ID = 1;
-  string apiVersion = 2;
-  string kind = 3;
-  map<string, string> metadata = 4;
-  map<string, string> annotations = 5;
-  repeated google.protobuf.Any data = 6; // represented as a cue.Value
-  repeated Link previous = 7;
-  repeated Link next = 8;
-}
-
-// A list of manifests
-message Manifests {
-  // label, query params
-  map<string, Node> manifest = 1;
-}
-
-// A graph of kubelt nodes
-message Graph {
-  string graph = 1; // graph as string?
-}
-
-// A change command
-message Command {
-  enum  Operation {
-    INSERT = 0;
-    UPDATE = 1;
-    REMOVE = 2;
-    LINK = 4;
-    UNLINK = 5;
-  }
-  
-  Operation op = 1;
-  string kind = 2;
-  Node node = 3;
-}
-
-// A list of Commands
-message Commands {
-  repeated Command commands = 1;
-}
-
-
-// User
-message User {
-  message Name {
-    string first = 1;
-    string last = 2;
-  }
-  
-  string username = 1;
-  Name name = 2;
-  string email = 3;
-  bytes publicKey = 4;
-  bytes signatureKey = 5;
-}
+import "core.proto";
+import "command.proto";
 
 // Requests
 // ============================================================================
+
+message QueryParams {
+  bool links = 1;
+}
 
 message Error {
   int32 code = 1;
@@ -93,50 +27,46 @@ message HealthCheckResponse {
   Error error = 1;
 }
 
-// User
-message UpsertUserRequest {
-  User user = 1;
+// Get
+message GetRequest {
+  QueryParams params = 1;
+  Node node = 2;
 }
 
-message UpsertUserResponse {
-  Error error = 1;
-}
-
-message DeleteUserRequest {
-  string id = 1;
-}
-
-message DeleteUserResponse {
-  Error error = 1;
-}
-
-// Apply
-message ApplyRequest {
-  Manifests manifests = 2;
-}
-
-message ApplyResponse {
-  Graph graph = 1;
+message GetResponse {
+  Node node = 1;
 
   Error error = 2;
 }
 
-// Commit
-message CommitRequest {
+// Query
+message QueryRequest {
+  QueryParams params = 1;
+  Manifests manifests = 2;
+}
+
+message QueryResponse {
+  string graph = 1;
+
+  Error error = 2;
+}
+
+// Apply
+message ApplyRequest {
   Commands commands = 1;
 }
 
-message CommitResponse {
+message ApplyResponse {
   Error error = 1;
 }
+
 
 // Service
 // ============================================================================
 service Kubelt {
-  rpc HealthCheck (HealthCheckRequest) returns (HealthCheckResponse);
-  rpc UpsertUser ( UpsertUserRequest ) returns ( UpsertUserResponse );
-  rpc DeleteUser ( DeleteUserRequest ) returns ( DeleteUserResponse );
+  rpc HealthCheck ( HealthCheckRequest ) returns ( HealthCheckResponse );
+  rpc Get ( GetRequest ) returns ( QueryResponse );
+  rpc Query ( QueryRequest ) returns ( QueryResponse );
   rpc Apply ( ApplyRequest ) returns ( ApplyResponse );
-  rpc Commit ( CommitRequest ) returns ( CommitResponse );
 }
 

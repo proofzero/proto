@@ -1,0 +1,58 @@
+// proto/v1alpha1/command.proto
+
+syntax = "proto3";
+
+package kubelt;
+option go_package="github.com/proofzero/kubelt/proto/v1alpha1";
+
+import "core.proto";
+import "user.proto";
+
+// Common
+// ============================================================================
+
+message CommandSettings {
+  int32 timeout = 1;
+}
+
+// UserCommand
+// ============================================================================
+
+message LinkCommand {
+  CommandSettings settings = 1;
+  Link link = 2;
+}
+
+// UserCommand
+// ============================================================================
+
+message UserCommand {
+  CommandSettings settings = 1;
+  User user = 2;
+}
+
+// Command
+// ============================================================================
+
+// A change command
+message Command {
+  enum  Operation {
+    UPSERT = 0;
+    REMOVE = 1;
+    LINK = 2;
+    UNLINK = 3;
+  }
+  
+  Operation op = 1;
+  string kind = 2;
+  oneof node {
+    UserCommand user = 4;
+    LinkCommand link = 6;
+  }
+}
+
+// A list of Commands
+message Commands {
+  repeated Command commands = 1;
+}
+

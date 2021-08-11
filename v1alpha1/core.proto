@@ -1,0 +1,98 @@
+// proto/v1alpha1/core.proto
+
+syntax = "proto3";
+
+package kubelt;
+option go_package="github.com/proofzero/kubelt/proto/v1alpha1";
+
+
+// Core
+// ============================================================================
+
+// A link
+message Link {
+  string source = 1;
+  string target = 2;
+  string kind = 3;
+  int32 rank = 4;
+  map<string, string> metadata = 5;
+}
+
+message Links {
+  repeated Link links = 1;
+}
+
+message Author {
+  bytes id = 1;
+  bytes signature = 2;
+}
+
+message Header {
+  string ID = 1;
+  string apiVersion = 2;
+  string kind = 3;
+  Author author = 4;
+  string prev = 5;
+}
+
+message Metadata {
+  string name = 1;
+  string description = 3;
+}
+
+// A node 
+message Node {
+  string ID = 1;
+  string kind = 3;
+  Metadata metadata = 4;
+}
+
+// A list of manifests
+message Manifests {
+  // label, query params
+  map<string, Node> manifest = 1;
+}
+
+
+/* 
+Contexts
+========
+- User contexts uses user secret to generate labels from metadata
+- Space contexts uses space secret to generate labels from metadat
+- Space labels are generated using the authors secret and can be pathed or shared
+- Spaces can link user nodes in to boostrap space context locally
+
+E.g.
+
+// dataset.cue
+dataset {
+  metadata: {
+    name: "foo"
+  }
+}
+
+func Labeler(name, context) NodeID
+func Index(NodeID, data) CID
+func Query(Labeler(name, context), queryData, ...version) CID
+
+NodeID -> CID
+
+// User Context Label
+kmdr apply dataset.cue
+kmdr get dataset foo
+
+// Space Context
+kmdr apply dataset.cue -c kubelt
+kmdr get dataset foo -c kubelt
+
+
+// Get content
+kmdr push dataset foo countries.csv
+kmdr pull dataset foo HEAD~1
+*/
+
+
+
+
+
+
