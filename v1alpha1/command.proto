@@ -38,11 +38,11 @@ message UserCommand {
 message Command {
   enum  Operation {
     UPSERT = 0;
-    REMOVE = 1;
+    DELETE = 1;
     LINK = 2;
     UNLINK = 3;
   }
-  
+
   Operation op = 1;
   oneof node {
     UserCommand user = 4;
