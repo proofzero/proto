@@ -56,24 +56,24 @@ func (mr *MockKubeltClientMockRecorder) Apply(ctx, in interface{}, opts ...inter
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Apply", reflect.TypeOf((*MockKubeltClient)(nil).Apply), varargs...)
 }
 
-// Commit mocks base method.
-func (m *MockKubeltClient) Commit(ctx context.Context, in *v1alpha1.CommitRequest, opts ...grpc.CallOption) (*v1alpha1.CommitResponse, error) {
+// Get mocks base method.
+func (m *MockKubeltClient) Get(ctx context.Context, in *v1alpha1.GetRequest, opts ...grpc.CallOption) (*v1alpha1.QueryResponse, error) {
 	m.ctrl.T.Helper()
 	varargs := []interface{}{ctx, in}
 	for _, a := range opts {
 		varargs = append(varargs, a)
 	}
-	ret := m.ctrl.Call(m, "Commit", varargs...)
-	ret0, _ := ret[0].(*v1alpha1.CommitResponse)
+	ret := m.ctrl.Call(m, "Get", varargs...)
+	ret0, _ := ret[0].(*v1alpha1.QueryResponse)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
-// Commit indicates an expected call of Commit.
-func (mr *MockKubeltClientMockRecorder) Commit(ctx, in interface{}, opts ...interface{}) *gomock.Call {
+// Get indicates an expected call of Get.
+func (mr *MockKubeltClientMockRecorder) Get(ctx, in interface{}, opts ...interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	varargs := append([]interface{}{ctx, in}, opts...)
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Commit", reflect.TypeOf((*MockKubeltClient)(nil).Commit), varargs...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Get", reflect.TypeOf((*MockKubeltClient)(nil).Get), varargs...)
 }
 
 // HealthCheck mocks base method.
@@ -94,6 +94,26 @@ func (mr *MockKubeltClientMockRecorder) HealthCheck(ctx, in interface{}, opts ..
 	mr.mock.ctrl.T.Helper()
 	varargs := append([]interface{}{ctx, in}, opts...)
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "HealthCheck", reflect.TypeOf((*MockKubeltClient)(nil).HealthCheck), varargs...)
+}
+
+// Query mocks base method.
+func (m *MockKubeltClient) Query(ctx context.Context, in *v1alpha1.QueryRequest, opts ...grpc.CallOption) (*v1alpha1.QueryResponse, error) {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{ctx, in}
+	for _, a := range opts {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "Query", varargs...)
+	ret0, _ := ret[0].(*v1alpha1.QueryResponse)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// Query indicates an expected call of Query.
+func (mr *MockKubeltClientMockRecorder) Query(ctx, in interface{}, opts ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{ctx, in}, opts...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Query", reflect.TypeOf((*MockKubeltClient)(nil).Query), varargs...)
 }
 
 // MockKubeltServer is a mock of KubeltServer interface.
@@ -134,19 +154,19 @@ func (mr *MockKubeltServerMockRecorder) Apply(arg0, arg1 interface{}) *gomock.Ca
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Apply", reflect.TypeOf((*MockKubeltServer)(nil).Apply), arg0, arg1)
 }
 
-// Commit mocks base method.
-func (m *MockKubeltServer) Commit(arg0 context.Context, arg1 *v1alpha1.CommitRequest) (*v1alpha1.CommitResponse, error) {
+// Get mocks base method.
+func (m *MockKubeltServer) Get(arg0 context.Context, arg1 *v1alpha1.GetRequest) (*v1alpha1.QueryResponse, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Commit", arg0, arg1)
-	ret0, _ := ret[0].(*v1alpha1.CommitResponse)
+	ret := m.ctrl.Call(m, "Get", arg0, arg1)
+	ret0, _ := ret[0].(*v1alpha1.QueryResponse)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
-// Commit indicates an expected call of Commit.
-func (mr *MockKubeltServerMockRecorder) Commit(arg0, arg1 interface{}) *gomock.Call {
+// Get indicates an expected call of Get.
+func (mr *MockKubeltServerMockRecorder) Get(arg0, arg1 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Commit", reflect.TypeOf((*MockKubeltServer)(nil).Commit), arg0, arg1)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Get", reflect.TypeOf((*MockKubeltServer)(nil).Get), arg0, arg1)
 }
 
 // HealthCheck mocks base method.
@@ -162,6 +182,21 @@ func (m *MockKubeltServer) HealthCheck(arg0 context.Context, arg1 *v1alpha1.Heal
 func (mr *MockKubeltServerMockRecorder) HealthCheck(arg0, arg1 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "HealthCheck", reflect.TypeOf((*MockKubeltServer)(nil).HealthCheck), arg0, arg1)
+}
+
+// Query mocks base method.
+func (m *MockKubeltServer) Query(arg0 context.Context, arg1 *v1alpha1.QueryRequest) (*v1alpha1.QueryResponse, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Query", arg0, arg1)
+	ret0, _ := ret[0].(*v1alpha1.QueryResponse)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// Query indicates an expected call of Query.
+func (mr *MockKubeltServerMockRecorder) Query(arg0, arg1 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Query", reflect.TypeOf((*MockKubeltServer)(nil).Query), arg0, arg1)
 }
 
 // mustEmbedUnimplementedKubeltServer mocks base method.
