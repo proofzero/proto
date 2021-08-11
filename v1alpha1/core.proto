@@ -46,7 +46,7 @@ message Node {
 }
 
 message Manifest {
-  string kind = 1;
+  string kind = 1; // can I remove this?
   Metadata metadata = 2;
   google.protobuf.Any data = 3;
 }
@@ -54,7 +54,7 @@ message Manifest {
 // A list of manifests
 message Manifests {
   // label, query params
-  map<string, Manifest> manifest = 1;
+  map<string, Manifest> manifests = 1;
 }
 
 
