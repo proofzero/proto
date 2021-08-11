@@ -71,10 +71,11 @@ message User {
     string last = 2;
   }
   
-  Name name = 1;
-  string email = 2;
-  bytes publicKey = 3;
-  bytes signatureKey = 4;
+  string username = 1;
+  Name name = 2;
+  string email = 3;
+  bytes publicKey = 4;
+  bytes signatureKey = 5;
 }
 
 // Requests
