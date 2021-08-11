@@ -67,7 +67,7 @@ message ApplyResponse {
 // ============================================================================
 service Kubelt {
   rpc HealthCheck ( HealthCheckRequest ) returns ( HealthCheckResponse );
-  rpc Get ( GetRequest ) returns ( QueryResponse );
+  rpc Get ( GetRequest ) returns ( GetResponse );
   rpc Query ( QueryRequest ) returns ( QueryResponse );
   rpc Apply ( ApplyRequest ) returns ( ApplyResponse );
 }

@@ -57,14 +57,14 @@ func (mr *MockKubeltClientMockRecorder) Apply(ctx, in interface{}, opts ...inter
 }
 
 // Get mocks base method.
-func (m *MockKubeltClient) Get(ctx context.Context, in *v1alpha1.GetRequest, opts ...grpc.CallOption) (*v1alpha1.QueryResponse, error) {
+func (m *MockKubeltClient) Get(ctx context.Context, in *v1alpha1.GetRequest, opts ...grpc.CallOption) (*v1alpha1.GetResponse, error) {
 	m.ctrl.T.Helper()
 	varargs := []interface{}{ctx, in}
 	for _, a := range opts {
 		varargs = append(varargs, a)
 	}
 	ret := m.ctrl.Call(m, "Get", varargs...)
-	ret0, _ := ret[0].(*v1alpha1.QueryResponse)
+	ret0, _ := ret[0].(*v1alpha1.GetResponse)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -155,10 +155,10 @@ func (mr *MockKubeltServerMockRecorder) Apply(arg0, arg1 interface{}) *gomock.Ca
 }
 
 // Get mocks base method.
-func (m *MockKubeltServer) Get(arg0 context.Context, arg1 *v1alpha1.GetRequest) (*v1alpha1.QueryResponse, error) {
+func (m *MockKubeltServer) Get(arg0 context.Context, arg1 *v1alpha1.GetRequest) (*v1alpha1.GetResponse, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Get", arg0, arg1)
-	ret0, _ := ret[0].(*v1alpha1.QueryResponse)
+	ret0, _ := ret[0].(*v1alpha1.GetResponse)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
