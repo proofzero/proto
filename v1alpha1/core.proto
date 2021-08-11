@@ -5,6 +5,7 @@ syntax = "proto3";
 package kubelt;
 option go_package="github.com/proofzero/kubelt/proto/v1alpha1";
 
+import "google/protobuf/any.proto";
 
 // Core
 // ============================================================================
@@ -32,7 +33,7 @@ message Header {
   string apiVersion = 2;
   string kind = 3;
   Author author = 4;
-  string prev = 5;
+  string prev = 5; // the CID to the previous version
 }
 
 message Metadata {
@@ -40,17 +41,20 @@ message Metadata {
   string description = 3;
 }
 
-// A node 
 message Node {
   string ID = 1;
-  string kind = 3;
-  Metadata metadata = 4;
+}
+
+message Manifest {
+  string kind = 1;
+  Metadata metadata = 2;
+  google.protobuf.Any data = 3;
 }
 
 // A list of manifests
 message Manifests {
   // label, query params
-  map<string, Node> manifest = 1;
+  map<string, Manifest> manifest = 1;
 }
 
 

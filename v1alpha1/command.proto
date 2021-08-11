@@ -44,7 +44,6 @@ message Command {
   }
   
   Operation op = 1;
-  string kind = 2;
   oneof node {
     UserCommand user = 4;
     LinkCommand link = 6;

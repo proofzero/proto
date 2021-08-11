@@ -5,6 +5,8 @@ syntax = "proto3";
 package kubelt;
 option go_package="github.com/proofzero/kubelt/proto/v1alpha1";
 
+import "google/protobuf/any.proto";
+
 import "core.proto";
 import "command.proto";
 
@@ -17,8 +19,8 @@ message QueryParams {
 
 message Error {
   int32 code = 1;
-
   string message = 2;
+  google.protobuf.Any details = 3;
 }
 
 // HealthCheck
