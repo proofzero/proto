@@ -14,7 +14,6 @@ go:
 	--proto_path=./v1alpha1 \
 	--go_out=./pkg/v1alpha1 \
 	--go_opt=paths=source_relative \
-	--go_opt=Mv1alpha1/kubelt.proto=github.com/proofzero/kubelt/proto/v1alpha1 \
 	--go-grpc_out=./pkg/v1alpha1 \
 	--go-grpc_opt=paths=source_relative \
 	v1alpha1/kubelt.proto

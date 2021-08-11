@@ -58,45 +58,5 @@ message Manifests {
 }
 
 
-/* 
-Contexts
-========
-- User contexts uses user secret to generate labels from metadata
-- Space contexts uses space secret to generate labels from metadat
-- Space labels are generated using the authors secret and can be pathed or shared
-- Spaces can link user nodes in to boostrap space context locally
-
-E.g.
-
-// dataset.cue
-dataset {
-  metadata: {
-    name: "foo"
-  }
-}
-
-func Labeler(name, context) NodeID
-func Index(NodeID, data) CID
-func Query(Labeler(name, context), queryData, ...version) CID
-
-NodeID -> CID
-
-// User Context Label
-kmdr apply dataset.cue
-kmdr get dataset foo
-
-// Space Context
-kmdr apply dataset.cue -c kubelt
-kmdr get dataset foo -c kubelt
-
-
-// Get content
-kmdr push dataset foo countries.csv
-kmdr pull dataset foo HEAD~1
-*/
-
-
-
-
 
 
