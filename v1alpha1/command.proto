@@ -35,6 +35,8 @@ message UserCommand {
 // ============================================================================
 
 // A change command
+// NOTE: if commands get complex it may make sense to not use op
+// but instead use specific commands like InsertUserCommand
 message Command {
   enum  Operation {
     UPSERT = 0;
