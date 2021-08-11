@@ -19,6 +19,8 @@ const _ = grpc.SupportPackageIsVersion7
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type KubeltClient interface {
 	HealthCheck(ctx context.Context, in *HealthCheckRequest, opts ...grpc.CallOption) (*HealthCheckResponse, error)
+	UpsertUser(ctx context.Context, in *UpsertUserRequest, opts ...grpc.CallOption) (*UpsertUserResponse, error)
+	DeleteUser(ctx context.Context, in *DeleteUserRequest, opts ...grpc.CallOption) (*DeleteUserResponse, error)
 	Apply(ctx context.Context, in *ApplyRequest, opts ...grpc.CallOption) (*ApplyResponse, error)
 	Commit(ctx context.Context, in *CommitRequest, opts ...grpc.CallOption) (*CommitResponse, error)
 }
@@ -34,6 +36,24 @@ func NewKubeltClient(cc grpc.ClientConnInterface) KubeltClient {
 func (c *kubeltClient) HealthCheck(ctx context.Context, in *HealthCheckRequest, opts ...grpc.CallOption) (*HealthCheckResponse, error) {
 	out := new(HealthCheckResponse)
 	err := c.cc.Invoke(ctx, "/kubelt.Kubelt/HealthCheck", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *kubeltClient) UpsertUser(ctx context.Context, in *UpsertUserRequest, opts ...grpc.CallOption) (*UpsertUserResponse, error) {
+	out := new(UpsertUserResponse)
+	err := c.cc.Invoke(ctx, "/kubelt.Kubelt/UpsertUser", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *kubeltClient) DeleteUser(ctx context.Context, in *DeleteUserRequest, opts ...grpc.CallOption) (*DeleteUserResponse, error) {
+	out := new(DeleteUserResponse)
+	err := c.cc.Invoke(ctx, "/kubelt.Kubelt/DeleteUser", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -63,6 +83,8 @@ func (c *kubeltClient) Commit(ctx context.Context, in *CommitRequest, opts ...gr
 // for forward compatibility
 type KubeltServer interface {
 	HealthCheck(context.Context, *HealthCheckRequest) (*HealthCheckResponse, error)
+	UpsertUser(context.Context, *UpsertUserRequest) (*UpsertUserResponse, error)
+	DeleteUser(context.Context, *DeleteUserRequest) (*DeleteUserResponse, error)
 	Apply(context.Context, *ApplyRequest) (*ApplyResponse, error)
 	Commit(context.Context, *CommitRequest) (*CommitResponse, error)
 	mustEmbedUnimplementedKubeltServer()
@@ -74,6 +96,12 @@ type UnimplementedKubeltServer struct {
 
 func (UnimplementedKubeltServer) HealthCheck(context.Context, *HealthCheckRequest) (*HealthCheckResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method HealthCheck not implemented")
+}
+func (UnimplementedKubeltServer) UpsertUser(context.Context, *UpsertUserRequest) (*UpsertUserResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpsertUser not implemented")
+}
+func (UnimplementedKubeltServer) DeleteUser(context.Context, *DeleteUserRequest) (*DeleteUserResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeleteUser not implemented")
 }
 func (UnimplementedKubeltServer) Apply(context.Context, *ApplyRequest) (*ApplyResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Apply not implemented")
@@ -108,6 +136,42 @@ func _Kubelt_HealthCheck_Handler(srv interface{}, ctx context.Context, dec func(
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(KubeltServer).HealthCheck(ctx, req.(*HealthCheckRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Kubelt_UpsertUser_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UpsertUserRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(KubeltServer).UpsertUser(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/kubelt.Kubelt/UpsertUser",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(KubeltServer).UpsertUser(ctx, req.(*UpsertUserRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Kubelt_DeleteUser_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeleteUserRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(KubeltServer).DeleteUser(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/kubelt.Kubelt/DeleteUser",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(KubeltServer).DeleteUser(ctx, req.(*DeleteUserRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -158,6 +222,14 @@ var Kubelt_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "HealthCheck",
 			Handler:    _Kubelt_HealthCheck_Handler,
+		},
+		{
+			MethodName: "UpsertUser",
+			Handler:    _Kubelt_UpsertUser_Handler,
+		},
+		{
+			MethodName: "DeleteUser",
+			Handler:    _Kubelt_DeleteUser_Handler,
 		},
 		{
 			MethodName: "Apply",

@@ -63,6 +63,20 @@ message Commands {
   repeated Command commands = 1;
 }
 
+
+// User
+message User {
+  message Name {
+    string first = 1;
+    string last = 2;
+  }
+  
+  Name name = 1;
+  string email = 2;
+  bytes publicKey = 3;
+  bytes signatureKey = 4;
+}
+
 // Requests
 // ============================================================================
 
@@ -75,6 +89,23 @@ message Error {
 // HealthCheck
 message HealthCheckRequest {}
 message HealthCheckResponse {
+  Error error = 1;
+}
+
+// User
+message UpsertUserRequest {
+  User user = 1;
+}
+
+message UpsertUserResponse {
+  Error error = 1;
+}
+
+message DeleteUserRequest {
+  string id = 1;
+}
+
+message DeleteUserResponse {
   Error error = 1;
 }
 
@@ -102,6 +133,8 @@ message CommitResponse {
 // ============================================================================
 service Kubelt {
   rpc HealthCheck (HealthCheckRequest) returns (HealthCheckResponse);
+  rpc UpsertUser ( UpsertUserRequest ) returns ( UpsertUserResponse );
+  rpc DeleteUser ( DeleteUserRequest ) returns ( DeleteUserResponse );
   rpc Apply ( ApplyRequest ) returns ( ApplyResponse );
   rpc Commit ( CommitRequest ) returns ( CommitResponse );
 }

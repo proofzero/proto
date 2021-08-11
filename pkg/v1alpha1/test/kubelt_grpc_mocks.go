@@ -76,6 +76,26 @@ func (mr *MockKubeltClientMockRecorder) Commit(ctx, in interface{}, opts ...inte
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Commit", reflect.TypeOf((*MockKubeltClient)(nil).Commit), varargs...)
 }
 
+// DeleteUser mocks base method.
+func (m *MockKubeltClient) DeleteUser(ctx context.Context, in *v1alpha1.DeleteUserRequest, opts ...grpc.CallOption) (*v1alpha1.DeleteUserResponse, error) {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{ctx, in}
+	for _, a := range opts {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "DeleteUser", varargs...)
+	ret0, _ := ret[0].(*v1alpha1.DeleteUserResponse)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// DeleteUser indicates an expected call of DeleteUser.
+func (mr *MockKubeltClientMockRecorder) DeleteUser(ctx, in interface{}, opts ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{ctx, in}, opts...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteUser", reflect.TypeOf((*MockKubeltClient)(nil).DeleteUser), varargs...)
+}
+
 // HealthCheck mocks base method.
 func (m *MockKubeltClient) HealthCheck(ctx context.Context, in *v1alpha1.HealthCheckRequest, opts ...grpc.CallOption) (*v1alpha1.HealthCheckResponse, error) {
 	m.ctrl.T.Helper()
@@ -94,6 +114,26 @@ func (mr *MockKubeltClientMockRecorder) HealthCheck(ctx, in interface{}, opts ..
 	mr.mock.ctrl.T.Helper()
 	varargs := append([]interface{}{ctx, in}, opts...)
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "HealthCheck", reflect.TypeOf((*MockKubeltClient)(nil).HealthCheck), varargs...)
+}
+
+// UpsertUser mocks base method.
+func (m *MockKubeltClient) UpsertUser(ctx context.Context, in *v1alpha1.UpsertUserRequest, opts ...grpc.CallOption) (*v1alpha1.UpsertUserResponse, error) {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{ctx, in}
+	for _, a := range opts {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "UpsertUser", varargs...)
+	ret0, _ := ret[0].(*v1alpha1.UpsertUserResponse)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// UpsertUser indicates an expected call of UpsertUser.
+func (mr *MockKubeltClientMockRecorder) UpsertUser(ctx, in interface{}, opts ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{ctx, in}, opts...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpsertUser", reflect.TypeOf((*MockKubeltClient)(nil).UpsertUser), varargs...)
 }
 
 // MockKubeltServer is a mock of KubeltServer interface.
@@ -149,6 +189,21 @@ func (mr *MockKubeltServerMockRecorder) Commit(arg0, arg1 interface{}) *gomock.C
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Commit", reflect.TypeOf((*MockKubeltServer)(nil).Commit), arg0, arg1)
 }
 
+// DeleteUser mocks base method.
+func (m *MockKubeltServer) DeleteUser(arg0 context.Context, arg1 *v1alpha1.DeleteUserRequest) (*v1alpha1.DeleteUserResponse, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "DeleteUser", arg0, arg1)
+	ret0, _ := ret[0].(*v1alpha1.DeleteUserResponse)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// DeleteUser indicates an expected call of DeleteUser.
+func (mr *MockKubeltServerMockRecorder) DeleteUser(arg0, arg1 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteUser", reflect.TypeOf((*MockKubeltServer)(nil).DeleteUser), arg0, arg1)
+}
+
 // HealthCheck mocks base method.
 func (m *MockKubeltServer) HealthCheck(arg0 context.Context, arg1 *v1alpha1.HealthCheckRequest) (*v1alpha1.HealthCheckResponse, error) {
 	m.ctrl.T.Helper()
@@ -162,6 +217,21 @@ func (m *MockKubeltServer) HealthCheck(arg0 context.Context, arg1 *v1alpha1.Heal
 func (mr *MockKubeltServerMockRecorder) HealthCheck(arg0, arg1 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "HealthCheck", reflect.TypeOf((*MockKubeltServer)(nil).HealthCheck), arg0, arg1)
+}
+
+// UpsertUser mocks base method.
+func (m *MockKubeltServer) UpsertUser(arg0 context.Context, arg1 *v1alpha1.UpsertUserRequest) (*v1alpha1.UpsertUserResponse, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "UpsertUser", arg0, arg1)
+	ret0, _ := ret[0].(*v1alpha1.UpsertUserResponse)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// UpsertUser indicates an expected call of UpsertUser.
+func (mr *MockKubeltServerMockRecorder) UpsertUser(arg0, arg1 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpsertUser", reflect.TypeOf((*MockKubeltServer)(nil).UpsertUser), arg0, arg1)
 }
 
 // mustEmbedUnimplementedKubeltServer mocks base method.
