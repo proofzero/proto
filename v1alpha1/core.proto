@@ -68,7 +68,3 @@ message Manifests {
   // label, query params
   map<string, Manifest> manifests = 1;
 }
-
-
-
-
