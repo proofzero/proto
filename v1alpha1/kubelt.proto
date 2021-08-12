@@ -48,7 +48,7 @@ message QueryRequest {
 }
 
 message QueryResponse {
-  string graph = 1;
+  repeated Node nodes = 1;
 
   Error error = 2;
 }

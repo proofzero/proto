@@ -5,27 +5,26 @@ syntax = "proto3";
 package kubelt;
 option go_package="github.com/proofzero/kubelt/proto/v1alpha1";
 
-import "core.proto";
 
 // User
 // ============================================================================
 
-// User
-message User {
-  Header header = 1;
-  Metadata metadata = 2;
 
+message UserData {
   message Name {
     string first = 1;
     string last = 2;
   }
   
-  message Data {
-    Name name = 2;
-    string email = 3;
-    bytes publicKey = 4;
-    bytes signatureKey = 5;
-  }
-
-  Data data = 3;
+  Name name = 1;
+  string email = 2;
+  bytes publicKey = 3;
+  bytes signatureKey = 4;
 }
+
+// message User {
+//   Header header = 1;
+//   Metadata metadata = 2;
+
+//   UserData data = 3;
+// }

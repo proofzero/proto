@@ -5,23 +5,10 @@ syntax = "proto3";
 package kubelt;
 option go_package="github.com/proofzero/kubelt/proto/v1alpha1";
 
-import "google/protobuf/any.proto";
+import "user.proto";
 
 // Core
 // ============================================================================
-
-// A link
-message Link {
-  string source = 1;
-  string target = 2;
-  string kind = 3;
-  int32 rank = 4;
-  map<string, string> metadata = 5;
-}
-
-message Links {
-  repeated Link links = 1;
-}
 
 message Author {
   bytes id = 1;
@@ -34,6 +21,7 @@ message Header {
   string kind = 3;
   Author author = 4;
   string prev = 5; // the CID to the previous version
+  repeated Annotation annotations = 6;
 }
 
 message Metadata {
@@ -41,14 +29,38 @@ message Metadata {
   string description = 3;
 }
 
+message Annotation {
+  string key = 1;
+  string value = 2;
+}
+
+message Link {
+  string source = 1;
+  string target = 2;
+  string kind = 3;
+  int32 rank = 4;
+  map<string, string> metadata = 5;
+}
+
+message Links {
+  repeated Link links = 1;
+}
+
 message Node {
-  string ID = 1;
+  Header header = 1;
+  Metadata metadata = 2;
+  oneof value {
+    UserData user = 5;
+    Link link = 7;
+  }
 }
 
 message Manifest {
-  string kind = 1; // can I remove this?
+  string kind = 1; // can I remove this if we have checks on "data"?
   Metadata metadata = 2;
-  google.protobuf.Any data = 3;
+  oneof data {
+    UserData user = 3;
+  }
 }
 
 // A list of manifests
