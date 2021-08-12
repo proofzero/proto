@@ -30,7 +30,8 @@ message LinkCommand {
 message UserCommand {
   CommandSettings settings = 1;
   Header header = 2;
-  UserData data = 3;
+  Metadata metadata = 3;
+  UserData data = 4;
 }
 
 // Command
