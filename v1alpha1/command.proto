@@ -20,7 +20,8 @@ message CommandSettings {
 
 message LinkCommand {
   CommandSettings settings = 1;
-  Link link = 2;
+  Header header = 2;
+  Link link = 3;
 }
 
 // UserCommand
@@ -28,7 +29,8 @@ message LinkCommand {
 
 message UserCommand {
   CommandSettings settings = 1;
-  User user = 2;
+  Header header = 2;
+  UserData data = 3;
 }
 
 // Command
