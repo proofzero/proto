@@ -37,7 +37,6 @@ message GetRequest {
 
 message GetResponse {
   Node node = 1;
-
   Error error = 2;
 }
 
@@ -53,13 +52,24 @@ message QueryResponse {
   Error error = 2;
 }
 
+// Register
+message RegisterRequest {
+  UserCommand user = 1;
+}
+
+message RegisterResponse {
+  Node node = 1;
+  Error error = 2;
+}
+
 // Apply
 message ApplyRequest {
   Commands commands = 1;
 }
 
 message ApplyResponse {
-  Error error = 1;
+  repeated Node nodes = 1;
+  Error error = 2;
 }
 
 
@@ -67,6 +77,7 @@ message ApplyResponse {
 // ============================================================================
 service Kubelt {
   rpc HealthCheck ( HealthCheckRequest ) returns ( HealthCheckResponse );
+  rpc RegisterUser ( ApplyRequest ) returns ( ApplyResponse );
   rpc Get ( GetRequest ) returns ( GetResponse );
   rpc Query ( QueryRequest ) returns ( QueryResponse );
   rpc Apply ( ApplyRequest ) returns ( ApplyResponse );
