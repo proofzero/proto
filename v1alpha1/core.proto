@@ -30,7 +30,7 @@ message Author {
 
 message Header {
   string ID = 1;
-  string apiVersion = 2;
+  string apiVersion = 2; // can I remove this
   string kind = 3;
   Author author = 4;
   string prev = 5; // the CID to the previous version

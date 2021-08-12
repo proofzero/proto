@@ -16,7 +16,7 @@ go:
 	--go_opt=paths=source_relative \
 	--go-grpc_out=./pkg/v1alpha1 \
 	--go-grpc_opt=paths=source_relative \
-	v1alpha1/kubelt.proto
+	v1alpha1/*.proto
 	$(info )
 
 mocks:
